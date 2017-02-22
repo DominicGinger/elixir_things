@@ -13,12 +13,12 @@ defmodule PrimeFactors do
     factors(num, d-1)
   end
 
-  defp prime?(_, 1), do: true
-  defp prime?(1, _), do: true
-  defp prime?(num, check) when rem(num, check) == 0 do
+  def prime?(_, 1), do: true
+  def prime?(1, _), do: true
+  def prime?(num, check) when rem(num, check) == 0 do
     false
   end
-  defp prime?(num, check) do
+  def prime?(num, check) do
     prime?(num, check-1)
   end
 end
