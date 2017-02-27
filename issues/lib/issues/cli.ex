@@ -1,7 +1,7 @@
 defmodule Issues.CLI do
   @default_count 4
 
-  def run(argv) do
+  def main(argv) do
     argv
     |> parse_args
     |> process
@@ -12,9 +12,9 @@ defmodule Issues.CLI do
     Enum.reduce(resp,
                 "#    | created_at           | title",
                 fn(item, acc) ->
-      "#{acc}\n#{item["number"]} | #{item["created_at"]} | #{item["title"]}"
-    end)
-    |> IO.puts
+                  "#{acc}\n#{item["number"]} | #{item["created_at"]} | #{item["title"]}"
+                end)
+                |> IO.puts
   end
 
   def process(:help) do
