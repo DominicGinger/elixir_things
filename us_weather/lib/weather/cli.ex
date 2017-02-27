@@ -4,6 +4,12 @@ defmodule UsWeather.CLI do
     argv
     |> parse_args
     |> fetch
+    |> parse
+  end
+
+  defp parse(xml) do
+    { doc, _ } = xml |> :binary.bin_to_list |> :xmerl_scan.string
+    doc
   end
 
   defp fetch(:help) do
@@ -14,7 +20,8 @@ defmodule UsWeather.CLI do
   end
 
   defp fetch({ area_code }) do
-    UsWeather.WeatherService.fetch(area_code)
+    { :ok, data } = UsWeather.WeatherService.fetch(area_code)
+    data
   end
 
   defp parse_args(argv) do
