@@ -5,6 +5,16 @@ defmodule Issues.CLI do
     argv
     |> parse_args
     |> process
+    |> pretty_print
+  end
+
+  def pretty_print(resp) do
+    Enum.reduce(resp,
+                "#    | created_at           | title",
+                fn(item, acc) ->
+      "#{acc}\n#{item["number"]} | #{item["created_at"]} | #{item["title"]}"
+    end)
+    |> IO.puts
   end
 
   def process(:help) do
@@ -14,9 +24,16 @@ defmodule Issues.CLI do
     System.halt(0)
   end
 
-  def process({ user, project, _count }) do
+  def process({ user, project, count }) do
     Issues.GithubIssues.fetch(user, project)
     |> decode_response
+    |> sort_into_ascending_order
+    |> Enum.take(count)
+  end
+
+  def sort_into_ascending_order(list_of_issues) do
+    Enum.sort list_of_issues,
+      fn i1, i2 -> Map.get(i1, "created_at") <= Map.get(i2, "created_at") end
   end
 
   def decode_response({ :ok, body }), do: body
