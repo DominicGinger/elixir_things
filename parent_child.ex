@@ -2,6 +2,7 @@ defmodule ParentChild do
 
   def child(parent) do
     send parent, "MSG"
+    raise parent, "ERROR"
     exit(:hello)
   end
 
